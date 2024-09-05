@@ -48,7 +48,7 @@ h1 {
   height: 80px;
   position: absolute;
   top: 0;
-  left: 0;
-  transition: transform 2s linear;
+  left: 100%; /* Start outside the grid (on the right) */
+  transition: transform 4s linear;
 }
----hi
+
