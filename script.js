@@ -20,19 +20,19 @@ function spawnGeorge() {
   george.src = 'george.png'; // Your george image
   george.classList.add('george');
 
-  // Append George to the leftmost cell of the chosen lane
-  const startCell = gameBoard.children[lane * gridSize]; // Leftmost cell in the random lane
+  // Append George to the rightmost cell of the chosen lane
+  const startCell = gameBoard.children[(lane * gridSize) + (gridSize - 1)]; // Rightmost cell in the random lane
   startCell.appendChild(george);
 
-  // Move George across the lane (left to right)
+  // Move George from right to left across the entire row
   setTimeout(() => {
-    george.style.transform = `translateX(${(gridSize - 1) * 100}px)`; // Move across the row
+    george.style.transform = `translateX(-${gridSize * 100}px)`; // Move left across the row
   }, 100); // Slight delay to apply smooth transition
 
-  // Remove George after 4 seconds
+  // Remove George after 4 seconds when it has moved completely off the grid
   setTimeout(() => {
     george.remove();
-  }, georgeMoveSpeed);
+  }, georgeMoveSpeed + 100); // Wait for the movement to complete before removing
 }
 
 // Spawn George every 2 seconds
@@ -56,3 +56,4 @@ gameBoard.addEventListener('click', (event) => {
     placingMonkey = false; // Disable monkey placement mode
   }
 });
+
