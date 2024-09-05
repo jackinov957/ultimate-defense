@@ -1,6 +1,6 @@
 // Game Settings
 const gridSize = 6; // 6x6 grid
-const georgeMoveSpeed = 1000; // 2 cells per second (1000ms per cell)
+const georgeMoveSpeed = 4000; // Move George across the grid in 4 seconds
 const georgeSpawnInterval = 2000; // Spawn George every 2 seconds
 
 // Get the game board element
@@ -13,13 +13,6 @@ for (let i = 0; i < gridSize * gridSize; i++) {
   gameBoard.appendChild(cell);
 }
 
-// Add the monkey to a specific cell (e.g., top-left corner for now)
-const cells = document.querySelectorAll('.grid-cell');
-const monkey = document.createElement('img');
-monkey.src = 'monkey.png'; // Your monkey image
-monkey.classList.add('monkey');
-cells[0].appendChild(monkey); // Place it in the first cell
-
 // Function to spawn George on a random lane
 function spawnGeorge() {
   const lane = Math.floor(Math.random() * gridSize); // Pick a random row (0 to 5)
@@ -27,23 +20,39 @@ function spawnGeorge() {
   george.src = 'george.png'; // Your george image
   george.classList.add('george');
 
-  // Append George to the rightmost cell of the chosen lane
-  const startCell = cells[(lane * gridSize) + (gridSize - 1)];
+  // Append George to the leftmost cell of the chosen lane
+  const startCell = gameBoard.children[lane * gridSize]; // Leftmost cell in the random lane
   startCell.appendChild(george);
 
-  // Move George left across the lane
-  let position = gridSize - 1;
-  const moveGeorge = setInterval(() => {
-    if (position > 0) {
-      position--;
-      const newCell = cells[(lane * gridSize) + position];
-      newCell.appendChild(george); // Move George to the next cell
-    } else {
-      clearInterval(moveGeorge); // Stop moving when George reaches the end of the lane
-      george.remove(); // Remove George from the board
-    }
+  // Move George across the lane (left to right)
+  setTimeout(() => {
+    george.style.transform = `translateX(${(gridSize - 1) * 100}px)`; // Move across the row
+  }, 100); // Slight delay to apply smooth transition
+
+  // Remove George after 4 seconds
+  setTimeout(() => {
+    george.remove();
   }, georgeMoveSpeed);
 }
 
 // Spawn George every 2 seconds
 setInterval(spawnGeorge, georgeSpawnInterval);
+
+// Add the monkey when the user clicks a cell after clicking the "Place Monkey" button
+let placingMonkey = false;
+
+document.getElementById('place-monkey-button').addEventListener('click', () => {
+  placingMonkey = true; // Enable monkey placement mode
+  alert('Click on a square to place a monkey!');
+});
+
+gameBoard.addEventListener('click', (event) => {
+  if (placingMonkey && event.target.classList.contains('grid-cell')) {
+    const cell = event.target;
+    const monkey = document.createElement('img');
+    monkey.src = 'monkey.png'; // Your monkey image
+    monkey.classList.add('monkey');
+    cell.appendChild(monkey); // Place the monkey in the clicked cell
+    placingMonkey = false; // Disable monkey placement mode
+  }
+});
