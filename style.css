@@ -1,0 +1,51 @@
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
+h1 {
+  margin-top: 20px;
+}
+
+/* Game Board Styles */
+#game-board {
+  display: grid;
+  grid-template-columns: repeat(6, 100px);
+  grid-template-rows: repeat(6, 100px);
+  gap: 2px;
+  background-color: #000;
+  border: 5px solid #333;
+}
+
+.grid-cell {
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.grid-cell:nth-child(odd) {
+  background-color: #ddd;
+}
+
+.monkey {
+  width: 80px;
+  height: 80px;
+}
+
+.george {
+  width: 80px;
+  height: 80px;
+  position: absolute;
+  left: 100%; /* Start outside of the board */
+  transition: left 1s linear;
+}
