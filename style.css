@@ -51,4 +51,13 @@ h1 {
   left: 100%; /* Start outside the grid (on the right) */
   transition: transform 4s linear;
 }
+/* General Styles unchanged */
+
+.banana {
+  width: 30px;
+  height: 30px;
+  position: absolute;
+  left: 0;
+  transition: transform 2s linear; /* Matches zombie speed */
+}
 
