@@ -196,5 +196,60 @@ function handleZombiesEatingTowers() {
     for (let i = 0; i < gameBoard.children.length; i++) {
       const cell = gameBoard.children[i];
       if (cell.querySelector('.monkey') || cell.querySelector('.dog')) {
-        const tower =
+        const tower = cell.querySelector('.monkey') || cell.querySelector('.dog');
+        const towerRect = tower.getBoundingClientRect();
+        if (
+          zombieRect.left < towerRect.right &&
+          zombieRect.right > towerRect.left &&
+          zombieRect.top < towerRect.bottom &&
+          zombieRect.bottom > towerRect.top
+        ) {
+          // Zombie is eating the tower
+          tower.classList.add('eaten');
+          setTimeout(() => {
+            tower.remove(); // Remove the tower after 3 seconds
+          }, towerEatenDuration);
+          break;
+        }
+      }
+    }
+  });
+}
+
+// Spawn George every 2 seconds
+setInterval(spawnGeorge, georgeSpawnInterval);
+
+// Spawn a dollar from the sky every 3 seconds
+setInterval(spawnDollar, dollarSpawnInterval);
+
+// Check for zombies and fire bananas every second
+setInterval(checkForZombiesAndFire, 1000);
+
+// Check for zombies eating towers every second
+setInterval(handleZombiesEatingTowers, 1000);
+
+// Add the monkey and dog towers when the user clicks a cell after clicking the "Place Monkey" or "Place Dog" button
+let placingMonkey = false;
+let placingTower = false;
+
+document.getElementById('place-monkey-button').addEventListener('click', () => {
+  placingMonkey = true; // Enable monkey placement mode
+});
+
+document.getElementById('place-dog-button').addEventListener('click', () => {
+  placingTower = true; // Enable dog tower placement mode
+});
+
+gameBoard.addEventListener('click', (event) => {
+  if (placingMonkey && event.target.classList.contains('grid-cell') && !event.target.querySelector('.monkey') && !event.target.querySelector('.dog')) {
+    const cell = event.target;
+    const monkey = document.createElement('img');
+    monkey.src = 'monkey.png'; // Your monkey image
+    monkey.classList.add('monkey');
+    cell.appendChild(monkey); // Place the monkey in the clicked cell
+    placingMonkey = false; // Disable monkey placement mode
+  } else if (placingTower) {
+    placeDog(event); // Place the dog tower
+  }
+});
 
