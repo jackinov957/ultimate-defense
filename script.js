@@ -1,8 +1,8 @@
 // Game Settings
 const gridSize = 6; // 6x6 grid
-const georgeMoveSpeed = 8000; // Move George across the grid in 8 seconds (half speed)
+const georgeMoveSpeed = 12000; // Move George across the grid in 12 seconds (slower speed)
 const georgeSpawnInterval = 2000; // Spawn George every 2 seconds
-const bananaSpeed = 4000; // Speed of the banana (same speed as original George)
+const bananaSpeed = 6000; // Speed of the banana (should be fast enough to reach zombies)
 const zombieHealth = 3; // Each zombie has 3 health
 
 // Get the game board element
@@ -33,12 +33,12 @@ function spawnGeorge() {
   const startCell = gameBoard.children[(lane * gridSize) + (gridSize - 1)]; // Rightmost cell in the random lane
   startCell.appendChild(george);
 
-  // Move George from right to left across the entire row
+  // Move George from right to left across the entire row (slower speed)
   setTimeout(() => {
     george.style.transform = `translateX(-${gridSize * 100}px)`; // Move left across the row
   }, 100);
 
-  // Remove George after 8 seconds when it has moved completely off the grid
+  // Remove George after 12 seconds when it has moved completely off the grid
   setTimeout(() => {
     if (george.parentElement) {
       george.remove();
@@ -124,7 +124,6 @@ let placingMonkey = false;
 
 document.getElementById('place-monkey-button').addEventListener('click', () => {
   placingMonkey = true; // Enable monkey placement mode
-  alert('Click on a square to place a monkey!');
 });
 
 gameBoard.addEventListener('click', (event) => {
